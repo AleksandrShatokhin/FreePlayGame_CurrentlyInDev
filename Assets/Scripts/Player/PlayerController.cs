@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDeathable
 {
     private Rigidbody rb_Player;
 
@@ -114,5 +114,15 @@ public class PlayerController : MonoBehaviour
     {
         distanceToEnemy = 0.0f;
         enemies.Clear();
+    }
+
+    void IDeathable.Kill()
+    {
+        Destroy(this.gameObject);
+    }
+
+    void IDeathable.TakeDamage(int damage)
+    {
+        GameController.GetInstance().GetReferencesToComponent().GetMainUIController().ChangePlayerHealthBar(damage);
     }
 }

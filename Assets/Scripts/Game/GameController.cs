@@ -39,4 +39,6 @@ public class GameController : MonoBehaviour
 
         Instantiate(red_Enemy_Prefab, spawnPos, Quaternion.identity);
     }
+
+    public ReferencesToComponents GetReferencesToComponent() => this.gameObject.GetComponent<ReferencesToComponents>();
 }

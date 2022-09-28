@@ -6,6 +6,7 @@ public class FireBall : MonoBehaviour
 {
     private Rigidbody rb_fireball;
     private float forceRate = 20.0f;
+    private int damage = 100;
 
     void Start()
     {
@@ -19,7 +20,7 @@ public class FireBall : MonoBehaviour
     {
         if (other.gameObject.layer == (int)Layers.Enemy)
         {
-            Destroy(other.GetComponentInParent<Red_Enemy_Controller>().gameObject);
+            other.GetComponentInParent<HealthComponent>().ChangeHealth(damage);
             Destroy(this.gameObject);
         }
     }
