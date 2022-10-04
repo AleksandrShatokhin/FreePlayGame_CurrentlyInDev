@@ -840,6 +840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshcol_ground: {fileID: 1858228223}
   red_Enemy_Prefab: {fileID: 184888427716033904, guid: b07ced8d5a671884ba24ea64d60e04be, type: 3}
+  deathBoardPrefab: {fileID: 930011398155941671, guid: c92451bedb3065c4c998da6c03948b82, type: 3}
 --- !u!4 &1156345182
 Transform:
   m_ObjectHideFlags: 0

@@ -37,7 +37,7 @@ public class LogInWindow : MonoBehaviour
 
     public void OnClickButtonLogIn()
     {
-        SceneManager.LoadScene("Level_1");
+        StartCoroutine(Login());
     }
 
     public void OnCliskButtonOpenRegistrationWindow()
@@ -45,5 +45,32 @@ public class LogInWindow : MonoBehaviour
         ClearInputField();
         this.gameObject.SetActive(false);
         registrationWindow.SetActive(true);
+    }
+
+    IEnumerator Login()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("name", inputFieldLogin.text);
+        form.AddField("password", inputFieldPassword.text);
+
+        WWW www = new WWW("http://localhost/SQLConnect/Login.php", form);
+        yield return www;
+
+        if (www.text[0] == '0')
+        {
+            DataBaseInformation.userName = inputFieldLogin.text;
+            DataBaseInformation.score = int.Parse(www.text.Split('\t')[1]);
+            SceneManager.LoadScene("Level_1");
+        }
+        else
+        {
+            Debug.Log("User login failed. Error #" + www.text);
+        }
+    }
+
+    private bool VerifyInput()
+    {
+        bool isInputCorrectText = inputFieldLogin.text == null && inputFieldPassword.text == null ? true : false;
+        return isInputCorrectText;
     }
 }

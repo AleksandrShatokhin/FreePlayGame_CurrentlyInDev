@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject red_Enemy_Prefab;
     private Vector3 spawnPos;
 
+    [SerializeField] private GameObject deathBoardPrefab;
+    public GameObject GetDaethBoardPrefab() => deathBoardPrefab;
+
     private void Awake()
     {
         instance = this;
@@ -19,6 +22,10 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         StartCoroutine(CoroutineSpawnEnemy());
+
+        Time.timeScale = 1.0f;
+        Debug.Log("Name player: " + DataBaseInformation.userName);
+        Debug.Log("Best result: " + DataBaseInformation.score);
     }
 
     IEnumerator CoroutineSpawnEnemy()

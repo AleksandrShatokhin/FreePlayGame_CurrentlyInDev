@@ -24,4 +24,6 @@ public class MainUIController : MonoBehaviour
         countEnemy += count;
         counterEnemyKills.text = textEnemyKills + countEnemy;
     }
+
+    public int GetCountEnemy() => countEnemy;
 }

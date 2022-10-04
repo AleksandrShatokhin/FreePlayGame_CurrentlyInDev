@@ -118,7 +118,11 @@ public class PlayerController : MonoBehaviour, IDeathable
 
     void IDeathable.Kill()
     {
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
+
+        GameObject deathBoard = GameController.GetInstance().GetDaethBoardPrefab();
+        Instantiate(deathBoard, deathBoard.transform.position, deathBoard.transform.rotation);
+        Time.timeScale = 0.0f;
     }
 
     void IDeathable.TakeDamage(int damage)
