@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using TMPro;
 
 public class RegistrationWindow : MonoBehaviour
@@ -54,19 +55,19 @@ public class RegistrationWindow : MonoBehaviour
         form.AddField("name", inputFieldLogin.text);
         form.AddField("password", inputFieldPassword.text);
 
-        WWW www = new WWW("http://localhost/SQLConnect/Register.php", form);
-        yield return www;
-
-        if (www.text == "0")
+        using (UnityWebRequest webRequest = UnityWebRequest.Post("http://localhost/SQLConnect/Register.php", form))
         {
-            Debug.Log("User created!");
+            yield return webRequest.SendWebRequest();
 
-            this.gameObject.SetActive(false);
-            logInWindow.SetActive(true);
-        }
-        else
-        {
-            Debug.Log("User created failed. Error #" + www.text);
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log("Error: " + webRequest.error);
+            }
+            else
+            {
+                this.gameObject.SetActive(false);
+                logInWindow.SetActive(true);
+            }
         }
     }
 

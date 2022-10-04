@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -53,18 +54,20 @@ public class LogInWindow : MonoBehaviour
         form.AddField("name", inputFieldLogin.text);
         form.AddField("password", inputFieldPassword.text);
 
-        WWW www = new WWW("http://localhost/SQLConnect/Login.php", form);
-        yield return www;
+        using (UnityWebRequest webRequest = UnityWebRequest.Post("http://localhost/SQLConnect/Login.php", form))
+        {
+            yield return webRequest.SendWebRequest();
 
-        if (www.text[0] == '0')
-        {
-            DataBaseInformation.userName = inputFieldLogin.text;
-            DataBaseInformation.score = int.Parse(www.text.Split('\t')[1]);
-            SceneManager.LoadScene("Level_1");
-        }
-        else
-        {
-            Debug.Log("User login failed. Error #" + www.text);
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log("Error: " + webRequest.error);
+            }
+            else
+            {
+                DataBaseInformation.userName = inputFieldLogin.text;
+                DataBaseInformation.score = int.Parse(webRequest.downloadHandler.text.Split('\t')[1]);
+                SceneManager.LoadScene("Level_1");
+            }
         }
     }
 

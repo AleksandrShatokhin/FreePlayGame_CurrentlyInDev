@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using TMPro;
 
@@ -38,16 +39,18 @@ public class DeathBoard : MonoBehaviour
         form.AddField("name", DataBaseInformation.userName);
         form.AddField("score", score);
 
-        WWW www = new WWW("http://localhost/SQLConnect/SaveData.php", form);
-        yield return www;
+        using (UnityWebRequest webRequest = UnityWebRequest.Post("http://localhost/SQLConnect/SaveData.php", form))
+        {
+            yield return webRequest.SendWebRequest();
 
-        if (www.text == "0")
-        {
-            Debug.Log("Game Saved");
-        }
-        else
-        {
-            Debug.Log("Save failed. Error #" + www.text);
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log("Error: " + webRequest.error);
+            }
+            else
+            {
+                Debug.Log("Game Saved");
+            }
         }
     }
 }
